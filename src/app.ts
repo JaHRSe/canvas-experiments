@@ -1,4 +1,6 @@
 import { RectangleRotation } from "./Rectangle-rotation";
+import { SliderControl } from "./slider-control";
+
 function container() {
   const container = document.createElement("div");
   container.className = "container";
@@ -7,9 +9,16 @@ function container() {
   title.innerText = "Experiments with HTML Canvas Element";
 
   const rectangleRotation = RectangleRotation();
+  const sliderControl = SliderControl({
+    width: 100,
+    height: 10,
+    sliderColor: "#e6ce8e",
+    handleColor: "#403e1d",
+  });
 
-  container.appendChild(title);
-  container.appendChild(rectangleRotation);
+  //container.appendChild(title);
+  //container.appendChild(rectangleRotation);
+  container.appendChild(sliderControl);
 
   return container;
 }
