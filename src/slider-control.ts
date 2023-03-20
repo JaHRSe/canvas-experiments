@@ -40,41 +40,46 @@ export function SliderControl(props: sliderControlProps) {
   const hardStopRight = width + buffer - handleSize;
   const hardStopLeft = buffer;
   const canvas = document.createElement("canvas");
+
   canvas.width = width + buffer * 2;
   canvas.height = handleSize + buffer * 2;
   canvas.style.backgroundColor = "#ADD8E6";
 
   const sliderLocation = { x: buffer, y: sizeUnit + buffer }; // center slider in canvas
-  let handleLocation = { x: buffer, y: buffer };
+  const handleLocation = { x: buffer, y: buffer };
 
+  function checkBounds(x: number) {
+    if (x < hardStopLeft) x = hardStopLeft;
+    if (x > hardStopRight) x = hardStopRight;
+    return x;
+  }
+
+  const getCurrentHandleXLocation = () => {
+    return checkBounds(handleLocation.x + mouseDelta);
+  };
   function draw() {
     clear(canvas);
     drawSlider({ canvas, height, sliderColor, sliderLocation, width });
-    let newX = handleLocation.x + mouseDelta;
-    if (newX < hardStopLeft) newX = hardStopLeft;
-    if (newX > hardStopRight) newX = hardStopRight;
+
     drawHandle({
       canvas,
       handleColor,
-      handleLocation: {
-        x: newX,
-        y: handleLocation.y,
-      },
+      handleLocation: { x: getCurrentHandleXLocation(), y: handleLocation.y },
       handleSize,
     });
   }
 
   const mouseLeaveUp = () => {
     isSliding = false;
-    handleLocation.x = handleLocation.x + mouseDelta;
+    handleLocation.x = getCurrentHandleXLocation();
     mouseDelta = 0;
   };
 
   // Handle move events
-  canvas.addEventListener("mouseup", (_ev) => {
+  canvas.addEventListener("mouseup", () => {
     mouseLeaveUp();
   });
-  canvas.addEventListener("mouseleave", (_ev) => {
+  canvas.addEventListener("mouseleave", () => {
     mouseLeaveUp();
   });
   canvas.addEventListener("mousedown", (ev) => {

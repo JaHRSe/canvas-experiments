@@ -10,7 +10,7 @@ function container() {
 
   const rectangleRotation = RectangleRotation();
   const sliderControl = SliderControl({
-    width: 100,
+    width: 200,
     height: 10,
     sliderColor: "#e6ce8e",
     handleColor: "#403e1d",
